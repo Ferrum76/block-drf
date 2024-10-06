@@ -1,13 +1,18 @@
-from users.apps import UsersConfig
-from rest_framework.routers import SimpleRouter
+from django.urls import path
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
-from users.views import PaymentViewSet
+from users.apps import UsersConfig
+from users.views import UserCreateAPIView, PaymentsListAPIView, PaymentsCreateAPIView
 
 app_name = UsersConfig.name
-
-router = SimpleRouter()
-router.register(r'payment', PaymentViewSet, basename='payment')
-
-urlpatterns = []
-
-urlpatterns += router.urls
+urlpatterns = [
+    path('register/', UserCreateAPIView.as_view(), name='register'),
+    path('login/', TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name='login'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('payments/', PaymentsListAPIView.as_view(), name='payments'),
+    path('payments/create/', PaymentsCreateAPIView.as_view(), name='payments_create')
+]
