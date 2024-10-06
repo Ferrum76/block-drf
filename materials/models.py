@@ -7,6 +7,7 @@ class Course(models.Model):
     title = models.CharField(max_length=50, help_text='Назавание курса')
     course_preview = models.ImageField(upload_to='materials/course_previews', verbose_name='Превью курса',  **NULLABLE)
     description = models.TextField(verbose_name='Содержание курса')
+    student = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Студент курса', **NULLABLE)
 
     class Meta:
         verbose_name = "Курс"
@@ -22,6 +23,7 @@ class Lesson(models.Model):
     lesson_preview = models.ImageField(upload_to='materials/lesson_previews', verbose_name='Превью урока', **NULLABLE)
     url_video = models.URLField(verbose_name='Ссылка на видео', **NULLABLE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс", **NULLABLE)
+    student = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Студент курса', **NULLABLE)
 
     class Meta:
         verbose_name = "Урок"
