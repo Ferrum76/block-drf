@@ -12,6 +12,7 @@ from materials.models import Course, Lesson, Subscription
 from materials.paginators import CustomPagination
 from materials.serializers import CourseSerializer, LessonSerializer, CourseCountSerializer, SubscriptionSerializer
 from users.permissions import IsModer, IsOwner
+from materials.tasks import update_notification
 
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
@@ -43,6 +44,7 @@ class CourseViewSet(ModelViewSet):
 
     def perform_update(self, serializer):
         instance = serializer.save()
+        update_notification.delay(instance.pk)
         return instance
 
 
