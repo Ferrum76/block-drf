@@ -75,14 +75,14 @@ class LessonTestCase(APITestCase):
 class CourseTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create(email='admin@example.com')
-        self.course = Course.objects.create(title="Английский")
+        self.course = Course.objects.create(title="Английский", owner=self.user)
         self.lesson = Lesson.objects.create(title="Present Simple", course=self.course, owner=self.user)
         self.client.force_authenticate(user=self.user)
 
     def test_course_retrieve(self):
         url = reverse("materials:course-detail", args=(self.course.pk,))
         response = self.client.get(url)
-        print('__TEST__', response.json())
+        #  print(response.json())
         data = response.json()
         self.assertEqual(
             response.status_code, status.HTTP_200_OK
@@ -111,6 +111,7 @@ class CourseTestCase(APITestCase):
             "title": "Английский"
         }
         response = self.client.patch(url, data)
+        #  print(response.json())
         data = response.json()
         self.assertEqual(
             response.status_code, status.HTTP_200_OK
@@ -153,7 +154,7 @@ class SubscriptionTestCase(APITestCase):
         }
         response = self.client.post(url, data)
         self.assertEqual(
-            response.status_code, status.HTTP_200_OK
+            response.status_code, status.HTTP_201_CREATED
         )
         self.assertEqual(
             Subscription.objects.all()[0].course, self.course
@@ -163,7 +164,7 @@ class SubscriptionTestCase(APITestCase):
         url = reverse('materials:subscription_create')
         response = self.client.post(url, {'course': self.course.pk})
         self.assertEqual(
-            response.status_code, status.HTTP_200_OK
+            response.status_code, status.HTTP_201_CREATED
         )
         self.assertEqual(
             Subscription.objects.count(), 0

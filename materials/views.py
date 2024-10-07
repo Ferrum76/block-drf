@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -92,4 +93,4 @@ class SubscriptionCreateAPIView(APIView):
         else:
             Subscription.objects.create(user=user, course=course)
             message = 'Подписка добавлена'
-        return Response({"message": message})
+        return Response({"message": message}, status=status.HTTP_201_CREATED)
