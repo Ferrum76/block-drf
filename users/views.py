@@ -14,7 +14,7 @@ class PaymentsListAPIView(generics.ListAPIView):
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ('paid_lesson', 'paid_course', 'payment_method')
-    ordering_fields = ('date_payment')
+    ordering_fields = ('date_payment', )
 
 
 class PaymentsCreateAPIView(CreateAPIView):
