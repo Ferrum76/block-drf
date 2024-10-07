@@ -1,17 +1,17 @@
 from django.contrib import admin
-
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscription
 
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'course_preview', 'description')
-    list_filter = ('title',)
-    search_fields = ('title',)
+    list_display = ['pk', 'title', 'description', 'preview_course']
 
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'lesson_preview', 'description', 'url_video')
-    list_filter = ('title',)
-    search_fields = ('title',)
+    list_display = ['pk', 'title', 'description', 'link_to_video', 'preview_lesson', 'course']
+
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'user', 'course']

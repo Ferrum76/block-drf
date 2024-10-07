@@ -1,27 +1,22 @@
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
+from materials.views import CourseViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
+    LessonUpdateAPIView, LessonDestroyAPIView, SubscriptionCreateAPIView
 from materials.apps import MaterialsConfig
-from materials.views import (
-    CourseViewSet,
-    LessonUpdateApiView,
-    LessonDestroyApiView,
-    LessonListApiView,
-    LessonCreateApiView,
-    LessonRetrieveApiView,
-)
 
 app_name = MaterialsConfig.name
 
 router = SimpleRouter()
-router.register(r'course', CourseViewSet, basename='course')
+router.register('', CourseViewSet)
 
 urlpatterns = [
-    path('lesson/', LessonListApiView.as_view(), name='lesson_list'),
-    path('lesson/<int:pk>/', LessonRetrieveApiView.as_view(), name='lesson_retrieve'),
-    path('lesson/create/', LessonCreateApiView.as_view(), name='lesson_create'),
-    path('lesson/<int:pk>/delete/', LessonDestroyApiView.as_view(), name='lesson_delete'),
-    path('lesson/<int:pk>/update/', LessonUpdateApiView.as_view(), name='lesson_update'),
+    path('lessons/', LessonListAPIView.as_view(), name="lesson_list"),
+    path('lessons/<int:pk>', LessonRetrieveAPIView.as_view(), name="lesson_retrieve"),
+    path('lessons/create', LessonCreateAPIView.as_view(), name="lesson_create"),
+    path('lessons/<int:pk>/delete/', LessonDestroyAPIView.as_view(), name="lesson_delete"),
+    path('lessons/<int:pk>/update/', LessonUpdateAPIView.as_view(), name="lesson_update"),
+    path('subscription/create/', SubscriptionCreateAPIView.as_view(), name='subscription_create'),
 ]
 
 urlpatterns += router.urls

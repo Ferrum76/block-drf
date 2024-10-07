@@ -1,29 +1,38 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework import serializers
 
-from materials.models import Lesson, Course
+from materials.models import Course, Lesson, Subscription
+from materials.validators import YoutubeValidator
 
 
 class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
+        validators = [YoutubeValidator(field='video_link')]
 
 
 class CourseSerializer(ModelSerializer):
-    lessons = LessonSerializer(many=True, read_only=True, source='lesson_set')
+    lessons = LessonSerializer(many=True, read_only=True)
 
     class Meta:
         model = Course
         fields = '__all__'
 
 
-class CourseDetailSerializer(ModelSerializer):
-    lesson_count = SerializerMethodField()
-    lessons = LessonSerializer(many=True, read_only=True, source='lesson_set')
+class CourseCountSerializer(ModelSerializer):
+    quantity_lesson = SerializerMethodField()
+    lessons = LessonSerializer(many=True, read_only=True)
 
-    def get_lesson_count(self, course):
+    def get_quantity_lesson(self, course):
         return Lesson.objects.filter(course=course).count()
 
     class Meta:
         model = Course
-        fields = ('title', 'description', 'lesson_count', 'lessons')
+        fields = ('title', 'preview', 'description', 'quantity_lesson', 'lessons')
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = '__all__'
