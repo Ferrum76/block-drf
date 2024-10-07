@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'materials',
     'django_filters',
     'rest_framework_simplejwt',
-    'drf_yasg'
+    'drf_yasg' # + pip install setuptools
 ]
 
 MIDDLEWARE = [
