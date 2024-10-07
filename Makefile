@@ -5,6 +5,7 @@ migrations:
 	python3 manage.py makemigrations
 
 dumpdata:
+	python3 manage.py dumpdata auth.group --indent 2 > /groups.json
 	python3 manage.py dumpdata users.payment > payment.json
 	python3 manage.py dumpdata materials > materials.json
 
